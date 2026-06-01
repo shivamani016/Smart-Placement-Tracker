@@ -37,8 +37,9 @@ app.use(
       // Allow requests with no origin (like mobile apps, postman, curl)
       if (!origin) return callback(null, true);
       
-      // Allow deployed frontend and any local development origin
-      if (allowedOrigins.includes(origin) || /^http:\/\/localhost:\d+$/.test(origin)) {
+      // Allow deployed frontend, Vercel preview deployments, and local development origins
+      const isAllowedVercel = origin.startsWith('https://smart-placement-tracker') && origin.endsWith('.vercel.app');
+      if (allowedOrigins.includes(origin) || isAllowedVercel || /^http:\/\/localhost:\d+$/.test(origin)) {
         return callback(null, true);
       }
       
